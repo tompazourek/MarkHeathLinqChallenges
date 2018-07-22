@@ -110,7 +110,11 @@ namespace MarkHeathLinqChallenges
         public static IEnumerable<TimeSpan> SolveProblem5(string input)
         {
             var inputItems = input.Split(',');
-            var output = inputItems.Select(x => TimeSpan.ParseExact(x, @"mm\:ss", CultureInfo.InvariantCulture));
+            var inputTimes = inputItems.Select(x => TimeSpan.ParseExact(x, @"mm\:ss", CultureInfo.InvariantCulture)).ToList();
+            var inputTimesHead = inputTimes.Take(1);
+            var inputTimesTail = inputTimes.Skip(1);
+
+            var output = inputTimesHead.Concat(inputTimes.Zip(inputTimesTail, (x, y) => y - x));
             return output;
         }
 

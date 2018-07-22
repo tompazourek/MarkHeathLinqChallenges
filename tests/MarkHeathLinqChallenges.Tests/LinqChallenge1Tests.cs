@@ -82,15 +82,15 @@ namespace MarkHeathLinqChallenges.Tests
             var expectedOutput = new []
             {
                 TimeSpan.FromSeconds(45),
-                TimeSpan.FromMinutes(1) + TimeSpan.FromSeconds(32),
-                TimeSpan.FromMinutes(2) + TimeSpan.FromSeconds(18),
-                TimeSpan.FromMinutes(3) + TimeSpan.FromSeconds(01),
-                TimeSpan.FromMinutes(3) + TimeSpan.FromSeconds(44),
-                TimeSpan.FromMinutes(4) + TimeSpan.FromSeconds(31),
-                TimeSpan.FromMinutes(5) + TimeSpan.FromSeconds(19),
-                TimeSpan.FromMinutes(6) + TimeSpan.FromSeconds(01),
-                TimeSpan.FromMinutes(6) + TimeSpan.FromSeconds(47),
-                TimeSpan.FromMinutes(7) + TimeSpan.FromSeconds(35),
+                TimeSpan.FromSeconds(47),
+                TimeSpan.FromSeconds(46),
+                TimeSpan.FromSeconds(43),
+                TimeSpan.FromSeconds(43),
+                TimeSpan.FromSeconds(47),
+                TimeSpan.FromSeconds(48),
+                TimeSpan.FromSeconds(42),
+                TimeSpan.FromSeconds(46),
+                TimeSpan.FromSeconds(48),
             };
 
             var actualOutput = LinqChallenge1Solution.SolveProblem5(input);
