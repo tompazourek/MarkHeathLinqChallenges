@@ -1,0 +1,1 @@
+Solutions to LINQ challenges from Mark Heath's blog.
