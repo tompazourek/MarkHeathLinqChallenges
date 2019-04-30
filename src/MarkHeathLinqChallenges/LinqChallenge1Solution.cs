@@ -24,15 +24,40 @@ namespace MarkHeathLinqChallenges
 
         #region Problem 2
 
-        public static IEnumerable<Problem2Player> SolveProblem2(string input)
+        public static string SolveProblem2(string input, DateTime now)
         {
             var inputItems = input.Split(new[] { "; " }, StringSplitOptions.None);
 
-            var outputItems = inputItems
-                .Select(x => x.Split(new[] { ", " }, StringSplitOptions.None))
-                .Select(x => new Problem2Player(x[0], DateTime.ParseExact(x[1], "dd/MM/yyyy", CultureInfo.InvariantCulture)));
+            const string dateFormat = "dd/MM/yyyy";
+            var culture = CultureInfo.InvariantCulture;
 
-            var output = outputItems.OrderByDescending(x => x.DateOfBirth);
+            (string name, DateTime dateOfBirth) parsePlayer(string x)
+            {
+                var parts = x.Split(new[] { ", " }, StringSplitOptions.None);
+                var name = parts[0];
+                var dateOfBirth = DateTime.ParseExact(parts[1], dateFormat, culture);
+                return (name, dateOfBirth);
+            }
+
+            int getAge(DateTime dateOfBirth)
+            {
+                var yearDifference = now.Year - dateOfBirth.Year;
+                if (now.Month > dateOfBirth.Month)
+                    return yearDifference;
+
+                if (now.Month == dateOfBirth.Month && now.Day >= dateOfBirth.Day)
+                    return yearDifference;
+
+                return yearDifference - 1;
+            }
+
+            string formatPlayer((string name, DateTime dateOfBirth) x) 
+                => x.name + ", " + x.dateOfBirth.ToString(dateFormat, culture) + $" (age {getAge(x.dateOfBirth)})";
+
+            var inputPlayers = inputItems.Select(parsePlayer);
+            var outputPlayers = inputPlayers.OrderByDescending(x => x.dateOfBirth);
+            var outputItems = outputPlayers.Select(formatPlayer);
+            var output = string.Join("; ", outputItems);
             return output;
         }
 
@@ -82,11 +107,17 @@ namespace MarkHeathLinqChallenges
 
         #region Problem 3
 
-        public static TimeSpan SolveProblem3(string input)
+        public static string SolveProblem3(string input)
         {
             var inputItems = input.Split(',');
-            var inputTimeSpans = inputItems.Select(x => TimeSpan.ParseExact(x, @"m\:ss", CultureInfo.InvariantCulture));
-            var output = inputTimeSpans.Aggregate(TimeSpan.Zero, (item, result) => result + item);
+
+            const string timeFormat = @"m\:ss";
+            var culture = CultureInfo.InvariantCulture;
+
+            var inputTimeSpans = inputItems.Select(x => TimeSpan.ParseExact(x, timeFormat, culture));
+            var outputTimeSpan = inputTimeSpans.Aggregate(TimeSpan.Zero, (item, result) => result + item);
+            
+            var output = outputTimeSpan.ToString(timeFormat, culture);
             return output;
         }
 
@@ -107,14 +138,19 @@ namespace MarkHeathLinqChallenges
 
         #region Problem 5
 
-        public static IEnumerable<TimeSpan> SolveProblem5(string input)
+        public static string SolveProblem5(string input)
         {
+            const string timeFormat = @"mm\:ss";
+            var culture = CultureInfo.InvariantCulture;
+
             var inputItems = input.Split(',');
-            var inputTimes = inputItems.Select(x => TimeSpan.ParseExact(x, @"mm\:ss", CultureInfo.InvariantCulture)).ToList();
+            var inputTimes = inputItems.Select(x => TimeSpan.ParseExact(x, timeFormat, culture)).ToList();
             var inputTimesHead = inputTimes.Take(1);
             var inputTimesTail = inputTimes.Skip(1);
 
-            var output = inputTimesHead.Concat(inputTimes.Zip(inputTimesTail, (x, y) => y - x));
+            var outputTimes = inputTimesHead.Concat(inputTimes.Zip(inputTimesTail, (x, y) => y - x));
+            var outputItems = outputTimes.Select(x => x.ToString(timeFormat, culture));
+            var output = string.Join(",", outputItems);
             return output;
         }
 
@@ -122,14 +158,16 @@ namespace MarkHeathLinqChallenges
 
         #region Problem 6
 
-        public static IEnumerable<int> SolveProblem6(string input)
+        public static string SolveProblem6(string input)
         {
-            var output = input.Split(',')
-                .Select(x => x.Split('-').Select(int.Parse).ToArray())
+            var inputItems = input.Split(',').Select(x => x.Split('-').Select(int.Parse).ToArray());
+
+            var outputItems = inputItems
                 .SelectMany(x => x.Length == 1
                     ? new[] { x[0] }
                     : Enumerable.Range(x[0], x[1] - x[0] + 1));
 
+            var output = string.Join(",", outputItems.Select(x => x.ToString()));
             return output;
         }
 
