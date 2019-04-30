@@ -61,48 +61,6 @@ namespace MarkHeathLinqChallenges
             return output;
         }
 
-        public class Problem2Player
-        {
-            public Problem2Player(string name, DateTime dateOfBirth)
-            {
-                Name = name;
-                DateOfBirth = dateOfBirth;
-            }
-
-            public string Name { get; }
-            public DateTime DateOfBirth { get; }
-
-            public int GetAge(DateTime now)
-            {
-                var yearDifference = now.Year - DateOfBirth.Year;
-                if (now.Month > DateOfBirth.Month)
-                    return yearDifference;
-
-                if (now.Month == DateOfBirth.Month && now.Day >= DateOfBirth.Day)
-                    return yearDifference;
-
-                return yearDifference - 1;
-            }
-
-            protected bool Equals(Problem2Player other) => string.Equals(Name, other.Name) && DateOfBirth.Equals(other.DateOfBirth);
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != GetType()) return false;
-                return Equals((Problem2Player) obj);
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ DateOfBirth.GetHashCode();
-                }
-            }
-        }
-
         #endregion
 
         #region Problem 3
